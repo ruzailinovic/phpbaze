@@ -12,13 +12,29 @@
 </h1>
 
 <p>
-    <?php
-    $sql = "EDIT FROM automobili WHERE  id=" . $_GET['id'];
-    $result = $conn->query($sql);
+<?php
+echo ($_GET['id']);
+$sql = "SELECT id, registracija, ime FROM automobili WHERE id=" . $_GET['id'];
+$result = $conn->query($sql);
 
-    header('Location: index.php');
-    ?>
+if ($result->num_rows > 0) {
+    // output data of each row
+   $row = $result->fetch_assoc();
+} else {
+    echo "Nema automobila";
+    die();
+}
+$conn->close();
 
+?>
+<form action="update.php" method="post">
+    Registracija:<br>
+    <input type="text" name="registracija" value="<?php echo ($row['registracija']); ?> "><br>
+    Ime:<br>
+    <input type="text" name="ime" value="<?php echo ($row['ime']); ?> "><br>
+    <input type="hidden" name="id" value="<?php echo ($row['id']); ?> "><br>
+    <input type="submit" value="Unesi automobil">
+</form>
 
 </p>
 </body>
